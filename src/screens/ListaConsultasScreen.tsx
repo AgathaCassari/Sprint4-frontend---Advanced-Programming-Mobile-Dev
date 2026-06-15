@@ -1,4 +1,10 @@
-import { View, FlatList, Text, Button } from "react-native";
+import {
+  View,
+  FlatList,
+  Text,
+  TouchableOpacity,
+} from "react-native";
+
 import ConsultaCard from "../components/ConsultaCard";
 import { Consulta } from "../types/Consulta";
 
@@ -19,28 +25,55 @@ export default function ListaConsultasScreen({
         flex: 1,
       }}
     >
-      <Text
+      <View style={{ marginBottom: 20 }}>
+        <Text
+          style={{
+            fontSize: 30,
+            fontWeight: "bold",
+            color: "#1565C0",
+          }}
+        >
+          Sistema de Consultas
+        </Text>
+
+        <Text
+          style={{
+            color: "#666",
+            marginTop: 5,
+          }}
+        >
+          Gerenciamento de consultas médicas
+        </Text>
+      </View>
+
+      <TouchableOpacity
         style={{
-          fontSize: 28,
-          fontWeight: "bold",
+          backgroundColor: "#1565C0",
+          padding: 15,
+          borderRadius: 12,
+          alignItems: "center",
           marginBottom: 20,
         }}
-      >
-        Consultas Médicas
-      </Text>
-
-      <Button
-        title="Nova Consulta"
         onPress={() =>
           navigation.navigate("Cadastro")
         }
-      />
-
-      <View style={{ height: 15 }} />
+      >
+        <Text
+          style={{
+            color: "#fff",
+            fontSize: 16,
+            fontWeight: "bold",
+          }}
+        >
+          + Nova Consulta
+        </Text>
+      </TouchableOpacity>
 
       <FlatList
         data={consultas}
-        keyExtractor={(item) => item.id.toString()}
+        keyExtractor={(item) =>
+          item.id.toString()
+        }
         renderItem={({ item }) => (
           <ConsultaCard
             consulta={item}

@@ -1,8 +1,10 @@
 import { useState } from "react";
+
 import {
   View,
+  Text,
   TextInput,
-  Button,
+  TouchableOpacity,
   StyleSheet,
 } from "react-native";
 
@@ -15,7 +17,8 @@ export default function CadastroConsultaScreen({
 }: Props) {
   const [paciente, setPaciente] = useState("");
   const [medico, setMedico] = useState("");
-  const [especialidade, setEspecialidade] = useState("");
+  const [especialidade, setEspecialidade] =
+    useState("");
   const [data, setData] = useState("");
 
   const cadastrar = () => {
@@ -45,6 +48,10 @@ export default function CadastroConsultaScreen({
 
   return (
     <View style={styles.container}>
+      <Text style={styles.titulo}>
+        Nova Consulta
+      </Text>
+
       <TextInput
         placeholder="Nome do paciente"
         value={paciente}
@@ -67,30 +74,58 @@ export default function CadastroConsultaScreen({
       />
 
       <TextInput
-        placeholder="Data da consulta (dd/mm/aaaa)"
+        placeholder="Data da consulta"
         value={data}
         onChangeText={setData}
         style={styles.input}
       />
 
-      <Button
-        title="Cadastrar Consulta"
+      <TouchableOpacity
+        style={styles.botao}
         onPress={cadastrar}
-      />
+      >
+        <Text style={styles.textoBotao}>
+          Cadastrar Consulta
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+    backgroundColor: "#F5F7FA",
     padding: 20,
   },
 
+  titulo: {
+    fontSize: 28,
+    fontWeight: "bold",
+    color: "#1565C0",
+    marginBottom: 20,
+  },
+
   input: {
+    backgroundColor: "#FFFFFF",
     borderWidth: 1,
-    borderColor: "#ccc",
-    padding: 10,
-    marginBottom: 10,
-    borderRadius: 8,
+    borderColor: "#DDD",
+    padding: 14,
+    marginBottom: 12,
+    borderRadius: 10,
+  },
+
+  botao: {
+    backgroundColor: "#1565C0",
+    padding: 15,
+    borderRadius: 12,
+    alignItems: "center",
+    marginTop: 10,
+  },
+
+  textoBotao: {
+    color: "#FFF",
+    fontWeight: "bold",
+    fontSize: 16,
   },
 });

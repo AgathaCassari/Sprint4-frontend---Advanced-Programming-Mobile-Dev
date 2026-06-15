@@ -1,5 +1,4 @@
 import {
-  View,
   Text,
   StyleSheet,
   TouchableOpacity,
@@ -25,19 +24,32 @@ export default function ConsultaCard({
         {consulta.paciente}
       </Text>
 
-      <Text>
+      <Text style={styles.info}>
         👨‍⚕️ {consulta.medico}
       </Text>
 
-      <Text>
+      <Text style={styles.info}>
         🏥 {consulta.especialidade}
       </Text>
 
-      <Text>
+      <Text style={styles.info}>
         📅 {consulta.data}
       </Text>
 
-      <Text style={styles.status}>
+      <Text
+        style={[
+          styles.status,
+          {
+            color:
+              consulta.status === "Agendada"
+                ? "#2E7D32"
+                : consulta.status ===
+                  "Concluída"
+                ? "#1565C0"
+                : "#D32F2F",
+          },
+        ]}
+      >
         {consulta.status}
       </Text>
     </TouchableOpacity>
@@ -46,21 +58,29 @@ export default function ConsultaCard({
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: "#fff",
-    padding: 15,
+    backgroundColor: "#FFFFFF",
+    padding: 18,
     marginBottom: 15,
-    borderRadius: 10,
-    elevation: 3,
+    borderRadius: 15,
+    elevation: 5,
+    borderLeftWidth: 6,
+    borderLeftColor: "#1565C0",
   },
 
   nome: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: "bold",
+    marginBottom: 10,
+  },
+
+  info: {
+    fontSize: 15,
+    marginBottom: 4,
   },
 
   status: {
-    marginTop: 8,
-    color: "#1976D2",
+    marginTop: 10,
     fontWeight: "bold",
+    fontSize: 15,
   },
 });
