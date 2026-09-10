@@ -1,67 +1,37 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-import { useState } from "react";
+import ListaAlertasScreen from "./src/screens/ListaAlertasScreen";
+import CadastroAlertaScreen from "./src/screens/CadastroAlertaScreen";
+import DetalheAlertaScreen from "./src/screens/DetalheAlertaScreen";
 
-import CadastroConsultaScreen from "./src/screens/CadastroConsultaScreen";
-import ListaConsultasScreen from "./src/screens/ListaConsultasScreen";
-import DetalheConsultaScreen from "./src/screens/DetalheConsultaScreen";
+export type RootStackParamList = {
+  Lista: undefined;
+  Cadastro: undefined;
+  Detalhe: { id: number };
+};
 
-import { consultasMock } from "./src/data/consultasMock";
-import { Consulta } from "./src/types/Consulta";
-
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function App() {
-  const [consultas, setConsultas] =
-    useState<Consulta[]>(consultasMock);
-
-  const adicionarConsulta = (
-    novaConsulta: Consulta
-  ) => {
-    setConsultas([
-      ...consultas,
-      novaConsulta,
-    ]);
-  };
-
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-
+      <Stack.Navigator initialRouteName="Lista">
         <Stack.Screen
-          name="Consultas"
-          options={{
-            title: "Consultas Médicas",
-          }}
-        >
-          {(props) => (
-            <ListaConsultasScreen
-              {...props}
-              consultas={consultas}
-            />
-          )}
-        </Stack.Screen>
-
+          name="Lista"
+          component={ListaAlertasScreen}
+          options={{ title: "Alertas - PrevIA" }}
+        />
         <Stack.Screen
           name="Cadastro"
-          options={{
-            title: "Nova Consulta",
-          }}
-        >
-          {(props) => (
-            <CadastroConsultaScreen
-              {...props}
-              adicionarConsulta={adicionarConsulta}
-            />
-          )}
-        </Stack.Screen>
-
+          component={CadastroAlertaScreen}
+          options={{ title: "Novo Alerta" }}
+        />
         <Stack.Screen
           name="Detalhe"
-          component={DetalheConsultaScreen}
+          component={DetalheAlertaScreen}
+          options={{ title: "Detalhe do Alerta" }}
         />
-
       </Stack.Navigator>
     </NavigationContainer>
   );
