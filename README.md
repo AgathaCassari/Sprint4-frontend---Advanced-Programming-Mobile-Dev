@@ -77,15 +77,19 @@ Definida em `src/services/api.ts` (constante `BASE_URL`):
 
 ## Fluxo tela → serviço → endpoint
 
-| Tela | Função do serviço | Endpoint |
-| --- | --- | --- |
-| Escolha de Especialidade | `listarEspecialidades()` | `GET /especialidades` |
-| Escolha de Médico | `listarMedicosPorEspecialidade(id)` | `GET /medicos/especialidade/{id}` |
-| <Tela de agendamento> | `agendarConsulta(...)` | `POST /consultas` |
-| <Tela de consultas do paciente> | `listarConsultasPorPaciente(id)` | `GET /consultas/paciente/{id}` |
-| <Tela de consultas do médico> | `listarConsultasPorMedico(id)` | `GET /consultas/medico/{id}` |
-| <Detalhe da consulta> | `buscarConsultaPorId(id)` | `GET /consultas/{id}` |
-| <Confirmar / cancelar> | `confirmarConsulta(...)` / `cancelarConsulta(...)` | `PUT /consultas/{id}` |
+| Tela                       | Função do serviço                                  | Endpoint                          |
+| -------------------------- | -------------------------------------------------- | --------------------------------- |
+| LoginPacienteScreen        | `buscarPacientePorCpf(cpf)`                        | `GET /pacientes/cpf/{cpf}`        |
+| CadastroPacienteScreen     | `cadastrarPaciente(...)`                           | `POST /pacientes`                 |
+| EscolhaEspecialidadeScreen | `listarEspecialidades()`                           | `GET /especialidades`             |
+| EscolhaMedicoScreen        | `listarMedicosPorEspecialidade(id)`                | `GET /medicos/especialidade/{id}` |
+| AgendarConsultaScreen      | `agendarConsulta(...)`                             | `POST /consultas`                 |
+| MinhasConsultasScreen      | `listarConsultasPorPaciente(id)`                   | `GET /consultas/paciente/{id}`    |
+| LoginMedicoScreen          | `buscarMedicoPorCrm(crm)`                          | `GET /medicos/crm/{crm}`          |
+| CadastroMedicoScreen       | `cadastrarMedico(...)`                             | `POST /medicos`                   |
+|                            | `listarEspecialidades()`                           | `GET /especialidades`             |
+| ConsultasMedicoScreen      | `listarConsultasPorMedico(id)`                     | `GET /consultas/medico/{id}`      |
+|                            | `confirmarConsulta(...)` / `cancelarConsulta(...)` | `PUT /consultas/{id}`             |
 
 ## Como cadastrar no app e conferir na API
 
