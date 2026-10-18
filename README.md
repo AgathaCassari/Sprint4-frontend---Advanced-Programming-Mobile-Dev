@@ -108,7 +108,7 @@ Definida em `src/services/api.ts` (constante `BASE_URL`):
 
 Cada tela tem três estados: **carregando**, **erro** e **sucesso**. As chamadas usam `try/catch/finally`, então uma falha de rede não trava a tela — ela mostra a mensagem de erro e permite tentar de novo assim que o backend voltar. Não há dados mockados no fluxo principal: com o backend parado, nenhum dado é exibido.
 
-##Vídeo
+## Vídeo
 
 🎥 <https://www.youtube.com/watch?v=CWpSwfw5hJQ> (YouTube, Não listado)
 O vídeo mostra: README e repositórios → backend no ar com GET em JSON → app listando a API → cadastro no app e o dado no backend → backend parado → app recarregado sem dados (erro/loading, sem mock).
