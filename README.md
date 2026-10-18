@@ -1,24 +1,16 @@
-# PrevIA — App (Frontend) · Sprint 4 · Entrega Final
+# Sistema de Consultas — App Frontend (Sprint 4)
 
-App Expo / React Native integrado à API Spring Boot do PrevIA.
+## Descrição
 
-## 1. Projeto e problema
+App Expo/React Native para o Sistema de Consultas. Nas sprints anteriores, o app usava dados mockados. Agora ele consome a API real do grupo (entidades **Consulta**, **Médico**, **Paciente** e **Especialidade**), que está em um repositório separado: **https://github.com/AgathaCassari/backend-consultas**. O fluxo de escolha de especialidade e médico, agendamento e listagem agora lê e grava direto no backend — o mock deixou de ser a fonte de dados.
 
-Em ambientes industriais, a segurança exige monitoramento contínuo e resposta rápida para evitar acidentes e proteger os operadores. Muitos riscos, como a ausência de EPI (capacete, colete, luvas), posturas inadequadas, aproximação de áreas perigosas ou condições invisíveis a olho nu, só são percebidos quando o incidente já ocorreu.
+**Problema:** pacientes têm dificuldade para agendar consultas e acompanhar seus atendimentos, e os médicos precisam controlar as consultas marcadas na sua agenda. O sistema centraliza esse processo: o paciente escolhe a especialidade e o médico e agenda a consulta; o médico consulta e gerencia (confirma ou cancela) as consultas agendadas, com todos os dados persistidos na API.
 
-O **PrevIA** é um sistema de prevenção de acidentes inspirado nesse desafio: a visão computacional identifica situações de risco e o sistema registra **alertas** de segurança (ausência de EPI, comportamento de risco etc.). Este app mobile permite **listar, cadastrar e consultar** esses alertas, consumindo a API Spring Boot do grupo, para que a equipe acompanhe os riscos e aja de forma preventiva..
+**Entidade principal:** `Consulta` (`id`, `medico`, `paciente`, `dataHora`, `status`, `valor`, `observacoes`), que se relaciona com `Medico`, `Paciente` e `Especialidade`.
 
-**Entidade principal:** `Alerta`
+**Importante:** o backend precisa estar rodando em `http://localhost:8080` antes de abrir o app, ou as telas vão mostrar o estado de erro.
 
-| Campo | Descrição |
-|---|---|
-| `id` | Gerado pelo backend |
-| `tipo` | Tipo do alerta (ex.: ausência de EPI) |
-| `localizacao` | Onde ocorreu |
-| `nivelRisco` | Nível de risco |
-| `descricao` | Descrição do ocorrido |
-
-## 2. Integrantes
+## Integrantes
 
 | Nome | RM |
 |---|---|
@@ -27,112 +19,91 @@ O **PrevIA** é um sistema de prevenção de acidentes inspirado nesse desafio: 
 | Leonardo Fernandes Veleiro | 557773 |
 | Sara Barbosa da Silva | 559042 |
 
-## 3. Repositórios
+## Repositórios
 
-| Parte | Link |
-|---|---|
-| Backend (Spring Boot) | https://github.com/AgathaCassari/Sprint1-backend---Advanced-Programming-Mobile-Dev |
-| Frontend (Expo) — este repositório | https://github.com/AgathaCassari/Sprint2-frontend---Advanced-Programming-Mobile-Dev |
+- Backend: https://github.com/AgathaCassari/backend-consultas
+- Frontend (este repositório): https://github.com/AgathaCassari/sistema-consultas-mobile
 
-## 4. Pré-requisitos
+## Pré-requisitos
 
-- **Java 17**
-- **Maven 3.9+** (o backend também traz o wrapper `./mvnw`)
-- **Node.js** (versão LTS) e **npm**
-- **Expo**: não precisa instalar globalmente, usa-se `npx expo start`
-- Para rodar o app: navegador, emulador (Android Studio / Xcode) **ou** celular com o app **Expo Go**
+- Java 17 e Maven (para o backend)
+- Node.js (versão LTS) e npm
+- Expo (usado com `npx expo start`, sem instalar global)
+- Navegador, emulador ou o app Expo Go
 
-## 5. Como subir o backend (porta 8080)
+## Como subir o frontend
 
-```bash
-git clone https://github.com/AgathaCassari/Sprint1-backend---Advanced-Programming-Mobile-Dev.git
-cd Sprint1-backend---Advanced-Programming-Mobile-Dev
-./mvnw spring-boot:run        # Windows: mvnw.cmd spring-boot:run  (ou: mvn spring-boot:run)
+1. Suba o backend antes (veja o README do repositório do backend).
+2. Clone este repositório.
+3. Instale as dependências:
 ```
-
-- A API sobe em `http://localhost:8080`.
-- Teste no navegador: `http://localhost:8080/alertas` deve devolver um JSON (`[]` ou a lista de alertas).
-- Banco **H2 em arquivo** (`jdbc:h2:file:./data/previa`): os dados persistem entre execuções.
-- Console H2 (opcional): `http://localhost:8080/h2-console` — JDBC URL `jdbc:h2:file:./data/previa`, usuário `sa`, senha em branco.
-- CORS liberado no `AlertaController` com `@CrossOrigin(origins = "*")`.
-
-## 6. Como subir o frontend
-
-Em **outro terminal**, com o backend já rodando:
-
-```bash
-git clone https://github.com/AgathaCassari/Sprint2-frontend---Advanced-Programming-Mobile-Dev.git
-cd Sprint2-frontend---Advanced-Programming-Mobile-Dev
 npm install
-npx expo start
 ```
+4. Rode `npx expo start`.
+5. Abra no navegador (tecla `w`, em `http://localhost:8081`), emulador ou no app Expo Go.
 
-Depois, no terminal do Expo:
-- tecle `w` para abrir no navegador;
-- tecle `a` para abrir no emulador Android;
-- tecle `i` para abrir no simulador iOS (somente macOS);
-- ou leia o QR Code com o **Expo Go** no celular.
+## Pasta `services`
 
-## 7. BASE_URL
+A tela nunca chama `axios` nem monta URL — tudo passa por:
 
-Definida em `src/services/api.ts`, na função `resolverBaseUrl()`:
+- `src/services/api.ts` — instância única do axios com `baseURL`, `timeout` de 10s e `Content-Type: application/json`. Também tem `isNetworkError()` (detecta quando o servidor não respondeu) e `healthCheck()` (`GET /health`, timeout de 3s).
+- `src/services/especialidadeService.ts`, `medicoService.ts`, `pacienteService.ts` e `consultaService.ts` — funções que conhecem as rotas. As telas só chamam essas funções.
 
-| Onde o app roda | BASE_URL |
-|---|---|
-| Navegador (web) / simulador iOS | `http://localhost:8080` |
-| Emulador Android | `http://10.0.2.2:8080` (o Android mapeia esse IP para o `localhost` do computador) |
-| Celular físico (Expo Go) | `http://<IP_DA_MAQUINA>:8080`, ex.: `http://192.168.0.10:8080` |
+## BASE_URL
 
-Para o celular físico: o celular e o computador precisam estar na **mesma rede Wi-Fi**. Edite a constante `IP_DA_MAQUINA` em `src/services/api.ts`. Para descobrir o IP, use `ipconfig` (Windows) ou `ifconfig` / `ip a` (Linux/macOS).
+Definida em `src/services/api.ts` (constante `BASE_URL`):
 
-## 8. Endpoints usados pelo app
+- Web / simulador iOS → `http://localhost:8080`
+- Emulador Android → `http://10.0.2.2:8080` (o Android mapeia esse IP para o localhost da máquina host)
+- Celular físico via Expo Go → IP da máquina na rede local, ex. `http://192.168.1.100:8080` (edite a constante `BASE_URL` no arquivo; celular e computador na mesma rede)
 
-| Ação | Método | Rota |
-|---|---|---|
-| Listar alertas | GET | `/alertas` |
-| Buscar alerta por ID | GET | `/alertas/{id}` |
-| Cadastrar alerta | POST | `/alertas` |
-| Atualizar alerta (opcional) | PUT | `/alertas/{id}` |
-| Remover alerta (opcional) | DELETE | `/alertas/{id}` |
+## Endpoints usados pelo app
 
-Exemplo de corpo do `POST /alertas`:
+| Recurso | Método | Rota |
+| --- | --- | --- |
+| Health | GET | `/health` |
+| Especialidades | GET | `/especialidades`, `/especialidades/{id}` |
+| | POST | `/especialidades` |
+| Médicos | GET | `/medicos`, `/medicos/{id}`, `/medicos/crm/{crm}`, `/medicos/especialidade/{id}` |
+| | POST | `/medicos` |
+| | PUT | `/medicos/{id}` |
+| Pacientes | GET | `/pacientes`, `/pacientes/{id}`, `/pacientes/cpf/{cpf}` |
+| | POST | `/pacientes` |
+| Consultas | GET | `/consultas`, `/consultas/{id}`, `/consultas/medico/{id}`, `/consultas/paciente/{id}` |
+| | POST | `/consultas` |
+| | PUT | `/consultas/{id}` (confirmar e cancelar alteram o `status`) |
 
-```json
-{
-  "tipo": "Ausência de EPI",
-  "localizacao": "Setor A",
-  "nivelRisco": "Alto",
-  "descricao": "Funcionário sem capacete na área de carga"
-}
-```
-
-## 9. Fluxo tela → serviço → endpoint
-
-As telas **nunca** chamam `axios` nem montam URL. Tudo passa por `src/services/`:
-
-- `src/services/api.ts`: instância única do axios (`baseURL`, `timeout` de 10 s, `Content-Type: application/json`).
-- `src/services/alertaService.ts`: funções que conhecem as rotas.
+## Fluxo tela → serviço → endpoint
 
 | Tela | Função do serviço | Endpoint |
-|---|---|---|
-| Lista de alertas | `listar()` | `GET /alertas` |
-| Cadastro de alerta | `criar(novoAlerta)` | `POST /alertas` |
-| Detalhe do alerta | `buscarPorId(id)` + `listar()` (em paralelo, via `Promise.all`) | `GET /alertas/{id}` e `GET /alertas` |
+| --- | --- | --- |
+| Escolha de Especialidade | `listarEspecialidades()` | `GET /especialidades` |
+| Escolha de Médico | `listarMedicosPorEspecialidade(id)` | `GET /medicos/especialidade/{id}` |
+| <Tela de agendamento> | `agendarConsulta(...)` | `POST /consultas` |
+| <Tela de consultas do paciente> | `listarConsultasPorPaciente(id)` | `GET /consultas/paciente/{id}` |
+| <Tela de consultas do médico> | `listarConsultasPorMedico(id)` | `GET /consultas/medico/{id}` |
+| <Detalhe da consulta> | `buscarConsultaPorId(id)` | `GET /consultas/{id}` |
+| <Confirmar / cancelar> | `confirmarConsulta(...)` / `cancelarConsulta(...)` | `PUT /consultas/{id}` |
 
-Fluxo: **Tela → `alertaService` → `api.ts` (axios) → API Spring Boot → H2 (arquivo)**.
+## Como cadastrar no app e conferir na API
 
-## 10. Como cadastrar no app e conferir na API
+1. Com backend e app rodando, na tela inicial escolha **Sou Paciente**.
+2. Escolha a **especialidade** e o **médico**, preencha os dados e **agende a consulta**.
+3. Confira que a consulta aparece na lista do app.
+4. Confira na API: abra `http://localhost:8080/consultas` no navegador (ou `curl http://localhost:8080/consultas`). A consulta nova aparece no JSON, com o `id` gerado pelo backend.
+5. (Opcional) Confira no console H2: `http://localhost:8080/h2-console`, JDBC URL `jdbc:h2:file:./data/consultas`.
 
-1. Com backend e app rodando, abra a **Lista** e veja os alertas atuais.
-2. Vá para **Cadastro**, preencha `tipo`, `localização`, `nível de risco` e `descrição` e salve.
-3. Ao voltar, a lista recarrega e mostra o novo alerta.
-4. Confira na API: abra `http://localhost:8080/alertas` no navegador (ou `curl http://localhost:8080/alertas`). O alerta novo aparece no JSON com o `id` gerado pelo backend.
-5. (Opcional) Confira no console H2 em `http://localhost:8080/h2-console`.
+## Como testar a integração
 
-## 11. Como parar o backend e ver o app sem dados
+1. Suba o backend (repositório separado) e confirme `GET http://localhost:8080/consultas` retornando `[]` ou dados já salvos.
+2. Suba este app, escolha **Sou Paciente** e veja a lista de especialidades e médicos — devem ser os mesmos dados da API.
+3. Agende uma consulta pelo app e confira que ela aparece:
+  - na lista do app;
+  - no `GET /consultas` direto no navegador/Postman.
+4. Para simular falha, pare o backend e recarregue o app.
 
-1. No terminal do backend, pressione `Ctrl + C`.
-2. No app, recarregue a lista (botão **"Tentar novamente"** ou recarregue o Expo com `r`).
-3. Resultado esperado: **nenhum dado é exibido**, só a mensagem de erro de conexão.
+## Comportamento com o backend parado
 
-Não existe mock no fluxo principal. Cada tela tem três estados (**carregando**, **erro** e **sucesso**), tratados com `try/catch/finally`. Quando o backend volta, basta tocar em "Tentar novamente".
+Cada tela tem três estados: **carregando**, **erro** e **sucesso**. As chamadas usam `try/catch/finally`, então uma falha de rede não trava a tela — ela mostra a mensagem de erro e permite tentar de novo assim que o backend voltar. Não há dados mockados no fluxo principal: com o backend parado, nenhum dado é exibido.
+
+## Vídeo
