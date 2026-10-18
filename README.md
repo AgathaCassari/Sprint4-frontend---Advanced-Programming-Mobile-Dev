@@ -4,7 +4,7 @@
 
 ## Descrição
 
-App Expo/React Native para o Sistema de Consultas. Nas sprints anteriores, o app usava dados mockados. Agora ele consome a API real do grupo (entidades **Consulta**, **Médico**, **Paciente** e **Especialidade**), que está em um repositório separado: **https://github.com/AgathaCassari/backend-consultas**. O fluxo de escolha de especialidade e médico, agendamento e listagem agora lê e grava direto no backend — o mock deixou de ser a fonte de dados.
+App Expo/React Native para o Sistema de Consultas. Nas sprints anteriores, o app usava dados mockados. Agora ele consome a API real do grupo (entidades **Consulta**, **Médico**, **Paciente** e **Especialidade**), que está em um repositório separado: **https://github.com/AgathaCassari/Sprint4-backend---Advanced-Programming-Mobile-Dev**. O fluxo de escolha de especialidade e médico, agendamento e listagem agora lê e grava direto no backend — o mock deixou de ser a fonte de dados.
 
 **Problema:** pacientes têm dificuldade para agendar consultas e acompanhar seus atendimentos, e os médicos precisam controlar as consultas marcadas na sua agenda. O sistema centraliza esse processo: o paciente escolhe a especialidade e o médico e agenda a consulta; o médico consulta e gerencia (confirma ou cancela) as consultas agendadas, com todos os dados persistidos na API.
 
@@ -23,8 +23,8 @@ App Expo/React Native para o Sistema de Consultas. Nas sprints anteriores, o app
 
 ## Repositórios
 
-- Backend: https://github.com/AgathaCassari/backend-consultas
-- Frontend (este repositório): https://github.com/AgathaCassari/sistema-consultas-mobile
+- Backend: https://github.com/AgathaCassari/Sprint4-backend---Advanced-Programming-Mobile-Dev
+- Frontend (este repositório): https://github.com/AgathaCassari/Sprint4-frontend---Advanced-Programming-Mobile-Dev
 
 ## Pré-requisitos
 
