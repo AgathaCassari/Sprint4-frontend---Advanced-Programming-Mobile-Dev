@@ -1,5 +1,7 @@
 # Sistema de Consultas — App Frontend (Sprint 4)
 
+🎥 Vídeo de demonstração (YouTube, Não listado): <https://www.youtube.com/watch?v=CWpSwfw5hJQ>
+
 ## Descrição
 
 App Expo/React Native para o Sistema de Consultas. Nas sprints anteriores, o app usava dados mockados. Agora ele consome a API real do grupo (entidades **Consulta**, **Médico**, **Paciente** e **Especialidade**), que está em um repositório separado: **https://github.com/AgathaCassari/backend-consultas**. O fluxo de escolha de especialidade e médico, agendamento e listagem agora lê e grava direto no backend — o mock deixou de ser a fonte de dados.
@@ -106,4 +108,7 @@ Definida em `src/services/api.ts` (constante `BASE_URL`):
 
 Cada tela tem três estados: **carregando**, **erro** e **sucesso**. As chamadas usam `try/catch/finally`, então uma falha de rede não trava a tela — ela mostra a mensagem de erro e permite tentar de novo assim que o backend voltar. Não há dados mockados no fluxo principal: com o backend parado, nenhum dado é exibido.
 
-## Vídeo
+##Vídeo
+
+🎥 <https://www.youtube.com/watch?v=CWpSwfw5hJQ> (YouTube, Não listado)
+O vídeo mostra: README e repositórios → backend no ar com GET em JSON → app listando a API → cadastro no app e o dado no backend → backend parado → app recarregado sem dados (erro/loading, sem mock).
